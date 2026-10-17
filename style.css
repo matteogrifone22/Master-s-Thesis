@@ -14,12 +14,14 @@
   padding: 0;
 }
 
-body {
-  background: linear-gradient(135deg, var(--blue-extradark) 0%, #061e2e 100%);
+/* Blocca del tutto la comparsa delle barre di scorrimento sul browser */
+html, body {
+  width: 100vw;
   height: 100vh;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, var(--blue-extradark) 0%, #061e2e 100%);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   font-family: system-ui, -apple-system, sans-serif;
   color: #ffffff;
 }
@@ -36,6 +38,7 @@ body {
   justify-content: space-between;
   padding: 0 20px;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .bar-group {
@@ -68,7 +71,7 @@ body {
 
 .page-badge {
   background: rgba(0, 59, 92, 0.7);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 16px;
   border: 1px solid var(--blue-mediumlight);
   font-size: 13px;
@@ -84,13 +87,13 @@ body {
   text-align: center;
 }
 
-/* Viewport */
+/* Viewport senza barre di scorrimento */
 .viewport {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto;
+  overflow: hidden !important;
   position: relative;
 }
 

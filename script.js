@@ -52,8 +52,8 @@ async function initBook() {
   try {
     const bookContainer = document.getElementById('book');
 
-    const DISPLAY_WIDTH = 500;
-    const DISPLAY_HEIGHT = 700;
+    const DISPLAY_WIDTH = 460;   // Ridotto leggermente per evitare ogni contatto coi bordi dello schermo
+    const DISPLAY_HEIGHT = 650;
     const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 3.0;
     const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 3.0;
 
@@ -98,7 +98,7 @@ async function initBook() {
 
     totalPages = bookContainer.children.length;
 
-    // Configurazione PageFlip con dimensioni fisse per eliminare ogni tremolio
+    // Configurazione PageFlip fissa
     pageFlip = new St.PageFlip(bookContainer, {
       width: DISPLAY_WIDTH,
       height: DISPLAY_HEIGHT,
@@ -131,8 +131,10 @@ async function initBook() {
 }
 
 function updateUI(pageNum) {
-  document.getElementById('page-counter').textContent = `Pagina ${pageNum} di ${totalPages}`;
-  document.getElementById('page-input').value = pageNum;
+  const counter = document.getElementById('page-counter');
+  const input = document.getElementById('page-input');
+  if (counter) counter.textContent = `Pagina ${pageNum} di ${totalPages}`;
+  if (input) input.value = pageNum;
 }
 
 function setupControls() {
@@ -144,45 +146,51 @@ function setupControls() {
   const btnZoomReset = document.getElementById('btn-zoom-reset');
   const scaler = document.getElementById('book-scaler');
 
-  if (btnPrev) btnPrev.addEventListener('click', () => pageFlip && pageFlip.flipPrev());
-  if (btnNext) btnNext.addEventListener('click', () => pageFlip && pageFlip.flipNext());
+  if (btnPrev) btnPrev.onclick = () => pageFlip && pageFlip.flipPrev();
+  if (btnNext) btnNext.onclick = () => pageFlip && pageFlip.flipNext();
 
   if (btnGo) {
-    btnGo.addEventListener('click', () => {
-      const val = parseInt(document.getElementById('page-input').value);
-      if (val >= 1 && val <= totalPages && pageFlip) {
-        pageFlip.turnToPage(val - 1);
+    btnGo.onclick = () => {
+      const input = document.getElementById('page-input');
+      if (input) {
+        const val = parseInt(input.value);
+        if (val >= 1 && val <= totalPages && pageFlip) {
+          pageFlip.turnToPage(val - 1);
+        }
       }
-    });
+    };
   }
 
-  // Zoom
-  if (btnZoomIn) {
-    btnZoomIn.addEventListener('click', () => {
+  // Zoom sicuro
+  if (btnZoomIn && scaler) {
+    btnZoomIn.onclick = () => {
       if (currentZoom < 1.8) {
         currentZoom += 0.2;
         scaler.style.transform = `scale(${currentZoom})`;
-        document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+        const label = document.getElementById('zoom-level');
+        if (label) label.textContent = `${Math.round(currentZoom * 100)}%`;
       }
-    });
+    };
   }
 
-  if (btnZoomOut) {
-    btnZoomOut.addEventListener('click', () => {
+  if (btnZoomOut && scaler) {
+    btnZoomOut.onclick = () => {
       if (currentZoom > 0.6) {
         currentZoom -= 0.2;
         scaler.style.transform = `scale(${currentZoom})`;
-        document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+        const label = document.getElementById('zoom-level');
+        if (label) label.textContent = `${Math.round(currentZoom * 100)}%`;
       }
-    });
+    };
   }
 
-  if (btnZoomReset) {
-    btnZoomReset.addEventListener('click', () => {
+  if (btnZoomReset && scaler) {
+    btnZoomReset.onclick = () => {
       currentZoom = 1;
       scaler.style.transform = `scale(1)`;
-      document.getElementById('zoom-level').textContent = `100%`;
-    });
+      const label = document.getElementById('zoom-level');
+      if (label) label.textContent = `100%`;
+    };
   }
 }
 
