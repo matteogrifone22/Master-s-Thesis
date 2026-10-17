@@ -11,22 +11,22 @@
 </head>
 <body>
 
-  <!-- Barra Superiore Glassmorphism -->
-  <header class="glass-bar top-bar">
-    <div class="nav-group">
+  <!-- Controls Bar Top -->
+  <header class="glass-bar">
+    <div class="bar-group">
       <button id="btn-toc" class="glass-btn">📖 Indice</button>
       <button id="btn-prev" class="glass-btn">◀ Prec</button>
       <span id="page-counter" class="page-badge">Pagina 1 di --</span>
       <button id="btn-next" class="glass-btn">Succ ▶</button>
     </div>
 
-    <div class="nav-group jump-group">
+    <div class="bar-group">
       <label for="page-input">Vai a pag:</label>
       <input type="number" id="page-input" min="1" value="1" class="glass-input">
       <button id="btn-go" class="glass-btn-sm">Vai</button>
     </div>
 
-    <div class="nav-group zoom-group">
+    <div class="bar-group">
       <button id="btn-zoom-out" class="glass-btn-sm">🔍 -</button>
       <span id="zoom-level">100%</span>
       <button id="btn-zoom-in" class="glass-btn-sm">🔍 +</button>
@@ -34,19 +34,24 @@
     </div>
   </header>
 
-  <!-- Contenitore Principale -->
-  <div class="main-wrapper">
-    <!-- Sidebar Indice Glassmorphism -->
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar Sommario -->
     <aside id="sidebar-toc" class="glass-sidebar hidden">
       <h2>Sommario</h2>
       <ul id="toc-list">
-        <li class="loading">Caricamento indice...</li>
+        <li data-page="1">📘 Copertina Blu</li>
+        <li data-page="5">📄 Frontespizio</li>
+        <li data-page="6">📑 Table of Contents</li>
+        <li data-page="10">📄 Capitolo 1</li>
+        <li data-page="20">📄 Capitolo 2</li>
+        <li data-page="30">📄 Capitolo 3</li>
       </ul>
     </aside>
 
-    <!-- Area del Libro -->
-    <main class="viewport" id="viewport">
-      <div id="book-scaler" class="book-scaler">
+    <!-- Book Viewport -->
+    <main class="viewport">
+      <div id="book-wrapper" class="book-wrapper">
         <div id="book"></div>
       </div>
     </main>

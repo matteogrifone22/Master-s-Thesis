@@ -7,7 +7,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 let pageFlip = null;
 let currentZoom = 1;
-let totalBookPages = 0;
+let totalPages = 0;
 
 function createBlankPage(width, height) {
   const pageDiv = document.createElement('div');
@@ -27,7 +27,7 @@ function createBlankPage(width, height) {
 
 async function renderPdfPageToDiv(pdfDoc, pageNum, isHard = false) {
   const page = await pdfDoc.getPage(pageNum);
-  const HIGH_RES_SCALE = 3.0; 
+  const HIGH_RES_SCALE = 2.5; 
   const viewport = page.getViewport({ scale: HIGH_RES_SCALE });
 
   const pageDiv = document.createElement('div');
@@ -52,10 +52,10 @@ async function initBook() {
   try {
     const bookContainer = document.getElementById('book');
 
-    const DISPLAY_WIDTH = 550;
-    const DISPLAY_HEIGHT = 770;
-    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 3;
-    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 3;
+    const DISPLAY_WIDTH = 480;  // Ridotto leggermente per garantire che due pagine stiano affiancate a schermo
+    const DISPLAY_HEIGHT = 680;
+    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 2.5;
+    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 2.5;
 
     // Caricamento PDF
     const coverPdf = await pdfjsLib.getDocument(COVER_URL).promise;
@@ -65,20 +65,20 @@ async function initBook() {
       backPdf = await pdfjsLib.getDocument(BACK_URL).promise;
     } catch(e) {}
 
-    // 1. Cover
+    // 1. Copertina Blu (Pagina 1)
     bookContainer.appendChild(await renderPdfPageToDiv(coverPdf, 1, true));
 
-    // 2-4. Pagine Bianche
+    // 2-4. Pagine Bianche interne
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
 
-    // 5. Tesi (La pagina 1 della tesi finirà sulla pagina 5 del libro)
+    // 5. Tesi (Pagina 1 della tesi, ovvero il Frontespizio)
     for (let i = 1; i <= tesiPdf.numPages; i++) {
       bookContainer.appendChild(await renderPdfPageToDiv(tesiPdf, i, false));
     }
 
-    // Bilanciamento pagine pari/dispari
+    // Pareggio pagine per quartini
     const currentCount = 4 + tesiPdf.numPages;
     if (currentCount % 2 !== 0) {
       bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
@@ -87,7 +87,7 @@ async function initBook() {
     // Pagina Bianca finale
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
 
-    // Back Cover
+    // 4ª di Copertina (Retro Blu)
     if (backPdf) {
       bookContainer.appendChild(await renderPdfPageToDiv(backPdf, 1, true));
     } else {
@@ -96,94 +96,42 @@ async function initBook() {
       bookContainer.appendChild(blankBack);
     }
 
-    totalBookPages = bookContainer.children.length;
+    totalPages = bookContainer.children.length;
 
-    // Inizializzazione PageFlip
+    // Configurazione PageFlip che FORZA le due pagine affiancate
     pageFlip = new St.PageFlip(bookContainer, {
       width: DISPLAY_WIDTH,
       height: DISPLAY_HEIGHT,
       size: 'fixed',
-      minWidth: 300,
-      maxWidth: 1000,
-      minHeight: 400,
-      maxHeight: 1200,
+      minWidth: 200,
+      maxWidth: 800,
+      minHeight: 300,
+      maxHeight: 1000,
       drawShadow: true,
       maxShadowOpacity: 0.5,
       showCover: true,
+      usePortrait: false,        // FORZA la vista a 2 pagine aperte
+      autoSize: false,
       mobileScrollSupport: false,
-      cornerSize: 40,           // Limita l'area trascinabile solo all'angolino (40px)
-      clickEventForward: true
+      cornerSize: 30
     });
 
     pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-    // Eventi e controlli
     pageFlip.on('flip', (e) => {
-      const pageNum = e.data + 1;
-      updateUI(pageNum);
+      updateUI(e.data + 1);
     });
 
     setupControls();
-    await buildTOC(tesiPdf);
     updateUI(1);
 
   } catch (error) {
-    console.error('Errore durante l\'inizializzazione:', error);
-  }
-}
-
-// Costruzione dell'Indice (Nativo se presente, altrimenti genera le sezioni)
-async function buildTOC(tesiPdf) {
-  const tocList = document.getElementById('toc-list');
-  tocList.innerHTML = '';
-
-  try {
-    const outline = await tesiPdf.getOutline();
-    if (outline && outline.length > 0) {
-      for (const item of outline) {
-        const li = document.createElement('li');
-        li.textContent = item.title;
-        // La pagina 1 della tesi corrisponde alla pagina 5 del libro 3D
-        if (item.dest) {
-          li.addEventListener('click', () => {
-            pageFlip.turnToPage(4); // Salta all'inizio della tesi
-          });
-        }
-        tocList.appendChild(li);
-      }
-    } else {
-      generateFallbackTOC(tocList, tesiPdf.numPages);
-    }
-  } catch(e) {
-    generateFallbackTOC(tocList, tesiPdf.numPages);
-  }
-}
-
-function generateFallbackTOC(container, totalTesiPages) {
-  container.innerHTML = '';
-  
-  const coverLi = document.createElement('li');
-  coverLi.textContent = 'Copertina';
-  coverLi.addEventListener('click', () => pageFlip.turnToPage(0));
-  container.appendChild(coverLi);
-
-  const tesiLi = document.createElement('li');
-  tesiLi.textContent = 'Inizio Tesi (Pagina 1)';
-  tesiLi.addEventListener('click', () => pageFlip.turnToPage(4));
-  container.appendChild(tesiLi);
-
-  // Genera collegamenti a blocchi di 10 pagine
-  for (let p = 10; p <= totalTesiPages; p += 10) {
-    const li = document.createElement('li');
-    li.textContent = `Tesi - Pagina ${p}`;
-    const targetBookPage = 4 + p - 1;
-    li.addEventListener('click', () => pageFlip.turnToPage(targetBookPage));
-    container.appendChild(li);
+    console.error('Errore durante l\'inizializzazione del libro:', error);
   }
 }
 
 function updateUI(pageNum) {
-  document.getElementById('page-counter').textContent = `Pagina ${pageNum} di ${totalBookPages}`;
+  document.getElementById('page-counter').textContent = `Pagina ${pageNum} di ${totalPages}`;
   document.getElementById('page-input').value = pageNum;
 }
 
@@ -193,7 +141,7 @@ function setupControls() {
 
   document.getElementById('btn-go').addEventListener('click', () => {
     const val = parseInt(document.getElementById('page-input').value);
-    if (val >= 1 && val <= totalBookPages) {
+    if (val >= 1 && val <= totalPages) {
       pageFlip.turnToPage(val - 1);
     }
   });
@@ -202,12 +150,21 @@ function setupControls() {
     document.getElementById('sidebar-toc').classList.toggle('hidden');
   });
 
-  // Controlli Zoom
-  const scaler = document.getElementById('book-scaler');
+  const tocItems = document.querySelectorAll('#toc-list li');
+  tocItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetPage = parseInt(item.getAttribute('data-page'));
+      if (targetPage && pageFlip) {
+        pageFlip.turnToPage(targetPage - 1);
+      }
+    });
+  });
+
+  const wrapper = document.getElementById('book-wrapper');
   document.getElementById('btn-zoom-in').addEventListener('click', () => {
     if (currentZoom < 1.8) {
       currentZoom += 0.2;
-      scaler.style.transform = `scale(${currentZoom})`;
+      wrapper.style.transform = `scale(${currentZoom})`;
       document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
     }
   });
@@ -215,14 +172,14 @@ function setupControls() {
   document.getElementById('btn-zoom-out').addEventListener('click', () => {
     if (currentZoom > 0.6) {
       currentZoom -= 0.2;
-      scaler.style.transform = `scale(${currentZoom})`;
+      wrapper.style.transform = `scale(${currentZoom})`;
       document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
     }
   });
 
   document.getElementById('btn-zoom-reset').addEventListener('click', () => {
     currentZoom = 1;
-    scaler.style.transform = `scale(1)`;
+    wrapper.style.transform = `scale(1)`;
     document.getElementById('zoom-level').textContent = `100%`;
   });
 }

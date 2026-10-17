@@ -20,87 +20,86 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   color: #ffffff;
 }
 
-/* Glassmorphism base */
-.glass-bar, .glass-sidebar {
-  background: rgba(12, 83, 120, 0.35);
+/* Glassmorphism Bar */
+.glass-bar {
+  height: 60px;
+  background: rgba(12, 83, 120, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(120, 201, 230, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-.top-bar {
-  height: 60px;
+  border-bottom: 1px solid rgba(120, 201, 230, 0.3);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 20px;
   z-index: 100;
 }
 
-.nav-group {
+.bar-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  font-size: 14px;
 }
 
-/* Pulsanti Glass */
 .glass-btn, .glass-btn-sm {
-  background: rgba(51, 131, 172, 0.3);
+  background: rgba(51, 131, 172, 0.35);
   border: 1px solid var(--blue-extralight);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 8px;
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .glass-btn-sm {
-  padding: 6px 10px;
+  padding: 5px 10px;
   font-size: 13px;
 }
 
 .glass-btn:hover, .glass-btn-sm:hover {
   background: var(--blue-main);
-  box-shadow: 0 0 12px var(--blue-extralight);
-  transform: translateY(-1px);
+  box-shadow: 0 0 10px var(--blue-extralight);
 }
 
 .page-badge {
-  background: rgba(0, 59, 92, 0.6);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 14px;
+  background: rgba(0, 59, 92, 0.7);
+  padding: 6px 12px;
+  border-radius: 16px;
   border: 1px solid var(--blue-mediumlight);
+  font-size: 13px;
 }
 
 .glass-input {
-  width: 65px;
-  background: rgba(0, 59, 92, 0.5);
+  width: 60px;
+  background: rgba(0, 59, 92, 0.6);
   border: 1px solid var(--blue-lightblue);
   color: #fff;
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 5px;
+  border-radius: 4px;
   text-align: center;
 }
 
-/* Layout Principale */
-.main-wrapper {
+/* Layout */
+.main-container {
   flex: 1;
   display: flex;
   position: relative;
   overflow: hidden;
 }
 
-/* Sidebar Indice */
+/* Sidebar */
 .glass-sidebar {
-  width: 300px;
+  width: 280px;
   height: 100%;
+  background: rgba(12, 83, 120, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(120, 201, 230, 0.3);
   padding: 20px;
   overflow-y: auto;
   transition: transform 0.3s ease;
@@ -125,28 +124,22 @@ body {
 }
 
 #toc-list li {
-  padding: 10px 12px;
+  padding: 10px;
   margin-bottom: 6px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  background: rgba(29, 107, 147, 0.2);
+  background: rgba(29, 107, 147, 0.3);
   border: 1px solid transparent;
   transition: all 0.2s;
 }
 
 #toc-list li:hover {
-  background: rgba(74, 155, 194, 0.4);
+  background: rgba(74, 155, 194, 0.5);
   border-color: var(--blue-extralight);
 }
 
-#toc-list li.active {
-  background: var(--blue-dark);
-  border-color: var(--blue-extralight);
-  font-weight: bold;
-}
-
-/* Area di lettura Libro */
+/* Viewport & Book */
 .viewport {
   flex: 1;
   display: flex;
@@ -156,10 +149,9 @@ body {
   padding: 20px;
 }
 
-.book-scaler {
+.book-wrapper {
   transition: transform 0.2s ease-out;
   transform-origin: center center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .page {
