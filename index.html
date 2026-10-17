@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tesi di Laurea - Libro 3D</title>
+  <title>Master's Thesis - 3D Book</title>
+  <link rel="icon" type="image/svg+xml" href="logo_UniGe_WHITE.svg">
   <link rel="stylesheet" href="style.css">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -11,8 +12,12 @@
 </head>
 <body>
 
-  <!-- Controls Bar Top -->
+  <!-- Floating glass island with branding and book controls. -->
   <header class="glass-bar">
+    <div class="brand">
+      <img src="logo_orizzontale_WHITE.svg" alt="Universita di Genova">
+    </div>
+
     <div class="bar-group">
       <button id="btn-prev" class="glass-btn">◀ Prec</button>
       <span id="page-counter" class="page-badge">Pagina 1 di --</span>
@@ -25,11 +30,12 @@
       <button id="btn-go" class="glass-btn-sm">Vai</button>
     </div>
 
+    <!-- Zoom controls: decrease, display, increase, or reset the book scale. -->
     <div class="bar-group">
-      <button id="btn-zoom-out" class="glass-btn-sm">🔍 -</button>
-      <span id="zoom-level">100%</span>
-      <button id="btn-zoom-in" class="glass-btn-sm">🔍 +</button>
-      <button id="btn-zoom-reset" class="glass-btn-sm">Reset</button>
+      <button id="btn-zoom-out" class="glass-btn-sm" type="button" aria-label="Riduci zoom" title="Riduci zoom">-</button>
+      <span id="zoom-level" class="zoom-level" aria-live="polite">100%</span>
+      <button id="btn-zoom-in" class="glass-btn-sm" type="button" aria-label="Aumenta zoom" title="Aumenta zoom">+</button>
+      <button id="btn-zoom-reset" class="glass-btn-sm" type="button">Reset</button>
     </div>
   </header>
 
