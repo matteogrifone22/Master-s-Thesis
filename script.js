@@ -11,7 +11,7 @@ let totalPages = 0;
 const MIN_ZOOM = 0.6;
 const MAX_ZOOM = 1.8;
 const ZOOM_STEP = 0.2;
-const RENDER_SCALE = 8.0;
+const RENDER_SCALE = 2.0;
 const FLIP_EDGE_ZONE = 14;
 
 function createBlankPage(width, height) {
