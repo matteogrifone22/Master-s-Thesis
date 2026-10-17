@@ -14,7 +14,6 @@
   <!-- Controls Bar Top -->
   <header class="glass-bar">
     <div class="bar-group">
-      <button id="btn-toc" class="glass-btn">📖 Indice</button>
       <button id="btn-prev" class="glass-btn">◀ Prec</button>
       <span id="page-counter" class="page-badge">Pagina 1 di --</span>
       <button id="btn-next" class="glass-btn">Succ ▶</button>
@@ -34,28 +33,12 @@
     </div>
   </header>
 
-  <!-- Main Container -->
-  <div class="main-container">
-    <!-- Sidebar Sommario -->
-    <aside id="sidebar-toc" class="glass-sidebar hidden">
-      <h2>Sommario</h2>
-      <ul id="toc-list">
-        <li data-page="1">📘 Copertina Blu</li>
-        <li data-page="5">📄 Frontespizio</li>
-        <li data-page="6">📑 Table of Contents</li>
-        <li data-page="10">📄 Capitolo 1</li>
-        <li data-page="20">📄 Capitolo 2</li>
-        <li data-page="30">📄 Capitolo 3</li>
-      </ul>
-    </aside>
-
-    <!-- Book Viewport -->
-    <main class="viewport">
-      <div id="book-wrapper" class="book-wrapper">
-        <div id="book"></div>
-      </div>
-    </main>
-  </div>
+  <!-- Main Viewport -->
+  <main class="viewport">
+    <div id="book-wrapper" class="book-wrapper">
+      <div id="book"></div>
+    </div>
+  </main>
 
   <script src="script.js"></script>
 </body>

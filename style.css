@@ -34,14 +34,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   z-index: 100;
 }
 
 .bar-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-size: 14px;
 }
 
@@ -53,7 +53,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .glass-btn-sm {
@@ -68,14 +68,14 @@ body {
 
 .page-badge {
   background: rgba(0, 59, 92, 0.7);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 16px;
   border: 1px solid var(--blue-mediumlight);
   font-size: 13px;
 }
 
 .glass-input {
-  width: 60px;
+  width: 65px;
   background: rgba(0, 59, 92, 0.6);
   border: 1px solid var(--blue-lightblue);
   color: #fff;
@@ -84,62 +84,7 @@ body {
   text-align: center;
 }
 
-/* Layout */
-.main-container {
-  flex: 1;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Sidebar */
-.glass-sidebar {
-  width: 280px;
-  height: 100%;
-  background: rgba(12, 83, 120, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-right: 1px solid rgba(120, 201, 230, 0.3);
-  padding: 20px;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
-  z-index: 90;
-}
-
-.glass-sidebar.hidden {
-  transform: translateX(-100%);
-  position: absolute;
-}
-
-.glass-sidebar h2 {
-  font-size: 18px;
-  color: var(--blue-extralight);
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--blue-mediumlight);
-}
-
-#toc-list {
-  list-style: none;
-}
-
-#toc-list li {
-  padding: 10px;
-  margin-bottom: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  background: rgba(29, 107, 147, 0.3);
-  border: 1px solid transparent;
-  transition: all 0.2s;
-}
-
-#toc-list li:hover {
-  background: rgba(74, 155, 194, 0.5);
-  border-color: var(--blue-extralight);
-}
-
-/* Viewport & Book */
+/* Viewport */
 .viewport {
   flex: 1;
   display: flex;
@@ -150,7 +95,6 @@ body {
 }
 
 .book-wrapper {
-  transition: transform 0.2s ease-out;
   transform-origin: center center;
 }
 
@@ -163,4 +107,6 @@ canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }

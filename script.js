@@ -27,7 +27,9 @@ function createBlankPage(width, height) {
 
 async function renderPdfPageToDiv(pdfDoc, pageNum, isHard = false) {
   const page = await pdfDoc.getPage(pageNum);
-  const HIGH_RES_SCALE = 2.5; 
+  
+  // Scala 3.5 per altissima risoluzione (testo e formule nitidissime)
+  const HIGH_RES_SCALE = 3.5; 
   const viewport = page.getViewport({ scale: HIGH_RES_SCALE });
 
   const pageDiv = document.createElement('div');
@@ -52,12 +54,12 @@ async function initBook() {
   try {
     const bookContainer = document.getElementById('book');
 
-    const DISPLAY_WIDTH = 480;  // Ridotto leggermente per garantire che due pagine stiano affiancate a schermo
-    const DISPLAY_HEIGHT = 680;
-    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 2.5;
-    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 2.5;
+    const DISPLAY_WIDTH = 500;
+    const DISPLAY_HEIGHT = 700;
+    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 3.5;
+    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 3.5;
 
-    // Caricamento PDF
+    // Caricamento file PDF
     const coverPdf = await pdfjsLib.getDocument(COVER_URL).promise;
     const tesiPdf = await pdfjsLib.getDocument(TESI_URL).promise;
     let backPdf = null;
@@ -65,20 +67,20 @@ async function initBook() {
       backPdf = await pdfjsLib.getDocument(BACK_URL).promise;
     } catch(e) {}
 
-    // 1. Copertina Blu (Pagina 1)
+    // 1. Cover Blu (Pagina 1)
     bookContainer.appendChild(await renderPdfPageToDiv(coverPdf, 1, true));
 
-    // 2-4. Pagine Bianche interne
+    // 2-4. Pagine Bianche
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
 
-    // 5. Tesi (Pagina 1 della tesi, ovvero il Frontespizio)
+    // 5. Tesi
     for (let i = 1; i <= tesiPdf.numPages; i++) {
       bookContainer.appendChild(await renderPdfPageToDiv(tesiPdf, i, false));
     }
 
-    // Pareggio pagine per quartini
+    // Pareggio pagine
     const currentCount = 4 + tesiPdf.numPages;
     if (currentCount % 2 !== 0) {
       bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
@@ -87,7 +89,7 @@ async function initBook() {
     // Pagina Bianca finale
     bookContainer.appendChild(createBlankPage(CANVAS_HD_WIDTH, CANVAS_HD_HEIGHT));
 
-    // 4ª di Copertina (Retro Blu)
+    // Back Cover
     if (backPdf) {
       bookContainer.appendChild(await renderPdfPageToDiv(backPdf, 1, true));
     } else {
@@ -98,22 +100,23 @@ async function initBook() {
 
     totalPages = bookContainer.children.length;
 
-    // Configurazione PageFlip che FORZA le due pagine affiancate
+    // Configurazione PageFlip fluida e stabile
     pageFlip = new St.PageFlip(bookContainer, {
       width: DISPLAY_WIDTH,
       height: DISPLAY_HEIGHT,
       size: 'fixed',
-      minWidth: 200,
-      maxWidth: 800,
-      minHeight: 300,
-      maxHeight: 1000,
+      minWidth: DISPLAY_WIDTH,
+      maxWidth: DISPLAY_WIDTH,
+      minHeight: DISPLAY_HEIGHT,
+      maxHeight: DISPLAY_HEIGHT,
       drawShadow: true,
-      maxShadowOpacity: 0.5,
+      maxShadowOpacity: 0.4,
       showCover: true,
-      usePortrait: false,        // FORZA la vista a 2 pagine aperte
+      usePortrait: false,
       autoSize: false,
       mobileScrollSupport: false,
-      cornerSize: 30
+      cornerSize: 30,
+      flippingTime: 700          // Animazione di sfoglio più morbida e costante
     });
 
     pageFlip.loadFromHTML(document.querySelectorAll('.page'));
@@ -146,20 +149,7 @@ function setupControls() {
     }
   });
 
-  document.getElementById('btn-toc').addEventListener('click', () => {
-    document.getElementById('sidebar-toc').classList.toggle('hidden');
-  });
-
-  const tocItems = document.querySelectorAll('#toc-list li');
-  tocItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const targetPage = parseInt(item.getAttribute('data-page'));
-      if (targetPage && pageFlip) {
-        pageFlip.turnToPage(targetPage - 1);
-      }
-    });
-  });
-
+  // Zoom
   const wrapper = document.getElementById('book-wrapper');
   document.getElementById('btn-zoom-in').addEventListener('click', () => {
     if (currentZoom < 1.8) {
