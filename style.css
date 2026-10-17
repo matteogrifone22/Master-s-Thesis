@@ -34,7 +34,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 20px;
   z-index: 100;
 }
 
@@ -84,18 +84,24 @@ body {
   text-align: center;
 }
 
-/* Viewport */
+/* Viewport & Book container */
 .viewport {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: auto;
-  padding: 20px;
+  position: relative;
 }
 
-.book-wrapper {
+.book-container {
+  width: 1000px;
+  height: 700px;
+  transition: transform 0.2s ease-out;
   transform-origin: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page {

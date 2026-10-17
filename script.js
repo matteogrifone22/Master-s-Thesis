@@ -27,9 +27,7 @@ function createBlankPage(width, height) {
 
 async function renderPdfPageToDiv(pdfDoc, pageNum, isHard = false) {
   const page = await pdfDoc.getPage(pageNum);
-  
-  // Scala 3.5 per altissima risoluzione (testo e formule nitidissime)
-  const HIGH_RES_SCALE = 3.5; 
+  const HIGH_RES_SCALE = 3.0; 
   const viewport = page.getViewport({ scale: HIGH_RES_SCALE });
 
   const pageDiv = document.createElement('div');
@@ -56,8 +54,8 @@ async function initBook() {
 
     const DISPLAY_WIDTH = 500;
     const DISPLAY_HEIGHT = 700;
-    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 3.5;
-    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 3.5;
+    const CANVAS_HD_WIDTH = DISPLAY_WIDTH * 3.0;
+    const CANVAS_HD_HEIGHT = DISPLAY_HEIGHT * 3.0;
 
     // Caricamento file PDF
     const coverPdf = await pdfjsLib.getDocument(COVER_URL).promise;
@@ -100,11 +98,11 @@ async function initBook() {
 
     totalPages = bookContainer.children.length;
 
-    // Configurazione PageFlip fluida e stabile
+    // Configurazione PageFlip fluida (size: 'stretch' per bloccare i tremolii)
     pageFlip = new St.PageFlip(bookContainer, {
       width: DISPLAY_WIDTH,
       height: DISPLAY_HEIGHT,
-      size: 'fixed',
+      size: 'stretch',
       minWidth: DISPLAY_WIDTH,
       maxWidth: DISPLAY_WIDTH,
       minHeight: DISPLAY_HEIGHT,
@@ -113,10 +111,9 @@ async function initBook() {
       maxShadowOpacity: 0.4,
       showCover: true,
       usePortrait: false,
-      autoSize: false,
       mobileScrollSupport: false,
       cornerSize: 30,
-      flippingTime: 700          // Animazione di sfoglio più morbida e costante
+      flippingTime: 600
     });
 
     pageFlip.loadFromHTML(document.querySelectorAll('.page'));
@@ -149,12 +146,13 @@ function setupControls() {
     }
   });
 
-  // Zoom
-  const wrapper = document.getElementById('book-wrapper');
+  // Correzione dello Zoom: applicato all'elemento 'book-container'
+  const container = document.getElementById('book-container');
+
   document.getElementById('btn-zoom-in').addEventListener('click', () => {
     if (currentZoom < 1.8) {
       currentZoom += 0.2;
-      wrapper.style.transform = `scale(${currentZoom})`;
+      container.style.transform = `scale(${currentZoom})`;
       document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
     }
   });
@@ -162,14 +160,14 @@ function setupControls() {
   document.getElementById('btn-zoom-out').addEventListener('click', () => {
     if (currentZoom > 0.6) {
       currentZoom -= 0.2;
-      wrapper.style.transform = `scale(${currentZoom})`;
+      container.style.transform = `scale(${currentZoom})`;
       document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
     }
   });
 
   document.getElementById('btn-zoom-reset').addEventListener('click', () => {
     currentZoom = 1;
-    wrapper.style.transform = `scale(1)`;
+    container.style.transform = `scale(1)`;
     document.getElementById('zoom-level').textContent = `100%`;
   });
 }
