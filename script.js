@@ -98,11 +98,11 @@ async function initBook() {
 
     totalPages = bookContainer.children.length;
 
-    // Configurazione PageFlip fluida (size: 'stretch' per bloccare i tremolii)
+    // Configurazione PageFlip con dimensioni fisse per eliminare ogni tremolio
     pageFlip = new St.PageFlip(bookContainer, {
       width: DISPLAY_WIDTH,
       height: DISPLAY_HEIGHT,
-      size: 'stretch',
+      size: 'fixed',
       minWidth: DISPLAY_WIDTH,
       maxWidth: DISPLAY_WIDTH,
       minHeight: DISPLAY_HEIGHT,
@@ -136,40 +136,54 @@ function updateUI(pageNum) {
 }
 
 function setupControls() {
-  document.getElementById('btn-prev').addEventListener('click', () => pageFlip.flipPrev());
-  document.getElementById('btn-next').addEventListener('click', () => pageFlip.flipNext());
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const btnGo = document.getElementById('btn-go');
+  const btnZoomIn = document.getElementById('btn-zoom-in');
+  const btnZoomOut = document.getElementById('btn-zoom-out');
+  const btnZoomReset = document.getElementById('btn-zoom-reset');
+  const scaler = document.getElementById('book-scaler');
 
-  document.getElementById('btn-go').addEventListener('click', () => {
-    const val = parseInt(document.getElementById('page-input').value);
-    if (val >= 1 && val <= totalPages) {
-      pageFlip.turnToPage(val - 1);
-    }
-  });
+  if (btnPrev) btnPrev.addEventListener('click', () => pageFlip && pageFlip.flipPrev());
+  if (btnNext) btnNext.addEventListener('click', () => pageFlip && pageFlip.flipNext());
 
-  // Correzione dello Zoom: applicato all'elemento 'book-container'
-  const container = document.getElementById('book-container');
+  if (btnGo) {
+    btnGo.addEventListener('click', () => {
+      const val = parseInt(document.getElementById('page-input').value);
+      if (val >= 1 && val <= totalPages && pageFlip) {
+        pageFlip.turnToPage(val - 1);
+      }
+    });
+  }
 
-  document.getElementById('btn-zoom-in').addEventListener('click', () => {
-    if (currentZoom < 1.8) {
-      currentZoom += 0.2;
-      container.style.transform = `scale(${currentZoom})`;
-      document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
-    }
-  });
+  // Zoom
+  if (btnZoomIn) {
+    btnZoomIn.addEventListener('click', () => {
+      if (currentZoom < 1.8) {
+        currentZoom += 0.2;
+        scaler.style.transform = `scale(${currentZoom})`;
+        document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+      }
+    });
+  }
 
-  document.getElementById('btn-zoom-out').addEventListener('click', () => {
-    if (currentZoom > 0.6) {
-      currentZoom -= 0.2;
-      container.style.transform = `scale(${currentZoom})`;
-      document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
-    }
-  });
+  if (btnZoomOut) {
+    btnZoomOut.addEventListener('click', () => {
+      if (currentZoom > 0.6) {
+        currentZoom -= 0.2;
+        scaler.style.transform = `scale(${currentZoom})`;
+        document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+      }
+    });
+  }
 
-  document.getElementById('btn-zoom-reset').addEventListener('click', () => {
-    currentZoom = 1;
-    container.style.transform = `scale(1)`;
-    document.getElementById('zoom-level').textContent = `100%`;
-  });
+  if (btnZoomReset) {
+    btnZoomReset.addEventListener('click', () => {
+      currentZoom = 1;
+      scaler.style.transform = `scale(1)`;
+      document.getElementById('zoom-level').textContent = `100%`;
+    });
+  }
 }
 
 initBook();

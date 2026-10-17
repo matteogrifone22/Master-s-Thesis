@@ -84,7 +84,7 @@ body {
   text-align: center;
 }
 
-/* Viewport & Book container */
+/* Viewport */
 .viewport {
   flex: 1;
   display: flex;
@@ -94,11 +94,9 @@ body {
   position: relative;
 }
 
-.book-container {
-  width: 1000px;
-  height: 700px;
-  transition: transform 0.2s ease-out;
+.book-scaler {
   transform-origin: center center;
+  transition: transform 0.2s ease-out;
   display: flex;
   justify-content: center;
   align-items: center;
