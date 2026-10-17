@@ -1,3 +1,13 @@
+:root {
+  --blue-extradark: #003B5C;
+  --blue-dark: #0C5378;
+  --blue-mediumdark: #1D6B93;
+  --blue-main: #3383AC;
+  --blue-mediumlight: #4A9BC2;
+  --blue-lightblue: #60B2D5;
+  --blue-extralight: #78C9E6;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,21 +15,151 @@
 }
 
 body {
-  background: #1e1e24;
+  background: linear-gradient(135deg, var(--blue-extradark) 0%, #061e2e 100%);
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   overflow: hidden;
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #ffffff;
 }
 
-.book-container {
-  width: 90vw;
-  height: 90vh;
+/* Glassmorphism base */
+.glass-bar, .glass-sidebar {
+  background: rgba(12, 83, 120, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(120, 201, 230, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.top-bar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Pulsanti Glass */
+.glass-btn, .glass-btn-sm {
+  background: rgba(51, 131, 172, 0.3);
+  border: 1px solid var(--blue-extralight);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.glass-btn-sm {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.glass-btn:hover, .glass-btn-sm:hover {
+  background: var(--blue-main);
+  box-shadow: 0 0 12px var(--blue-extralight);
+  transform: translateY(-1px);
+}
+
+.page-badge {
+  background: rgba(0, 59, 92, 0.6);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid var(--blue-mediumlight);
+}
+
+.glass-input {
+  width: 65px;
+  background: rgba(0, 59, 92, 0.5);
+  border: 1px solid var(--blue-lightblue);
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Layout Principale */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sidebar Indice */
+.glass-sidebar {
+  width: 300px;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 90;
+}
+
+.glass-sidebar.hidden {
+  transform: translateX(-100%);
+  position: absolute;
+}
+
+.glass-sidebar h2 {
+  font-size: 18px;
+  color: var(--blue-extralight);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--blue-mediumlight);
+}
+
+#toc-list {
+  list-style: none;
+}
+
+#toc-list li {
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background: rgba(29, 107, 147, 0.2);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+#toc-list li:hover {
+  background: rgba(74, 155, 194, 0.4);
+  border-color: var(--blue-extralight);
+}
+
+#toc-list li.active {
+  background: var(--blue-dark);
+  border-color: var(--blue-extralight);
+  font-weight: bold;
+}
+
+/* Area di lettura Libro */
+.viewport {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+  padding: 20px;
+}
+
+.book-scaler {
+  transition: transform 0.2s ease-out;
+  transform-origin: center center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .page {
@@ -31,5 +171,4 @@ canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
-  image-rendering: -webkit-optimize-contrast; /* Ottimizza la nitidezza dei font */
 }

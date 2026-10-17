@@ -11,8 +11,45 @@
 </head>
 <body>
 
-  <div class="book-container">
-    <div id="book"></div>
+  <!-- Barra Superiore Glassmorphism -->
+  <header class="glass-bar top-bar">
+    <div class="nav-group">
+      <button id="btn-toc" class="glass-btn">📖 Indice</button>
+      <button id="btn-prev" class="glass-btn">◀ Prec</button>
+      <span id="page-counter" class="page-badge">Pagina 1 di --</span>
+      <button id="btn-next" class="glass-btn">Succ ▶</button>
+    </div>
+
+    <div class="nav-group jump-group">
+      <label for="page-input">Vai a pag:</label>
+      <input type="number" id="page-input" min="1" value="1" class="glass-input">
+      <button id="btn-go" class="glass-btn-sm">Vai</button>
+    </div>
+
+    <div class="nav-group zoom-group">
+      <button id="btn-zoom-out" class="glass-btn-sm">🔍 -</button>
+      <span id="zoom-level">100%</span>
+      <button id="btn-zoom-in" class="glass-btn-sm">🔍 +</button>
+      <button id="btn-zoom-reset" class="glass-btn-sm">Reset</button>
+    </div>
+  </header>
+
+  <!-- Contenitore Principale -->
+  <div class="main-wrapper">
+    <!-- Sidebar Indice Glassmorphism -->
+    <aside id="sidebar-toc" class="glass-sidebar hidden">
+      <h2>Sommario</h2>
+      <ul id="toc-list">
+        <li class="loading">Caricamento indice...</li>
+      </ul>
+    </aside>
+
+    <!-- Area del Libro -->
+    <main class="viewport" id="viewport">
+      <div id="book-scaler" class="book-scaler">
+        <div id="book"></div>
+      </div>
+    </main>
   </div>
 
   <script src="script.js"></script>
