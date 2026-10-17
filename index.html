@@ -3,52 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tesi di Laurea - Libro 3D Interattivo</title>
+  <title>Tesi di Laurea - Libro 3D</title>
   <link rel="stylesheet" href="style.css">
   
-  <!-- PDF.js da CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <!-- Page-Flip JS da CDN -->
   <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 </head>
 <body>
 
-  <!-- Pannello dei Controlli Superiori e Navigazione -->
-  <div class="top-bar">
-    <div class="controls-group">
-      <button id="btn-toc-toggle" title="Sommario">📖 Indice</button>
-      <button id="btn-prev" title="Pagina precedente">◀ Prec</button>
-      <span id="page-info">Pagina 1 / --</span>
-      <button id="btn-next" title="Pagina successiva">Succ ▶</button>
-    </div>
-
-    <div class="controls-group">
-      <label for="page-slider">Salta a:</label>
-      <input type="range" id="page-slider" min="1" max="1" value="1">
-    </div>
-
-    <div class="controls-group">
-      <button id="btn-zoom-out">🔍 -</button>
-      <button id="btn-zoom-reset">100%</button>
-      <button id="btn-zoom-in">🔍 +</button>
-    </div>
-  </div>
-
-  <div class="main-container">
-    <!-- Sidebar del Sommario (TOC) -->
-    <aside id="sidebar" class="sidebar">
-      <h3>Indice dei Contenuti</h3>
-      <ul id="toc-list">
-        <li class="loading-toc">Caricamento indice in corso...</li>
-      </ul>
-    </aside>
-
-    <!-- Area del Libro con supporto Zoom -->
-    <main class="viewport" id="viewport">
-      <div class="book-wrapper" id="book-wrapper">
-        <div id="book"></div>
-      </div>
-    </main>
+  <div class="book-container">
+    <div id="book"></div>
   </div>
 
   <script src="script.js"></script>

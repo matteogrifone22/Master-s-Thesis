@@ -5,129 +5,26 @@
 }
 
 body {
-  background: #18181c;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #1e1e24;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Barra superiore dei controlli */
-.top-bar {
-  height: 50px;
-  background: #24242a;
-  border-bottom: 1px solid #33333d;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 100;
-}
-
-.controls-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-}
-
-button {
-  background: #3a3a46;
-  color: #fff;
-  border: 1px solid #525263;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background: #505062;
-}
-
-input[type="range"] {
-  cursor: pointer;
-  width: 150px;
-}
-
-/* Container Principale */
-.main-container {
-  flex: 1;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Sidebar Indice */
-.sidebar {
-  width: 280px;
-  background: #1f1f26;
-  border-right: 1px solid #33333d;
-  padding: 15px;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
-}
-
-.sidebar.hidden {
-  transform: translateX(-100%);
-  position: absolute;
-  height: 100%;
-}
-
-.sidebar h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #3a3a46;
-  padding-bottom: 8px;
-}
-
-#toc-list {
-  list-style: none;
-}
-
-#toc-list li {
-  padding: 8px 10px;
-  margin-bottom: 4px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  color: #ccc;
-  line-height: 1.3;
-}
-
-#toc-list li:hover {
-  background: #2d2d38;
-  color: #fff;
-}
-
-#toc-list li.active {
-  background: #4a5d8e;
-  color: #fff;
-  font-weight: bold;
-}
-
-/* Area di lettura / Libro */
-.viewport {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto;
-  padding: 20px;
+  overflow: hidden;
+  font-family: sans-serif;
 }
 
-.book-wrapper {
-  transition: transform 0.2s ease-out;
-  transform-origin: center center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+.book-container {
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page {
   background-color: #ffffff;
   overflow: hidden;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 canvas {
