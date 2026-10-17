@@ -36,14 +36,14 @@ async function initBook() {
     const pageFlip = new St.PageFlip(bookContainer, {
       width: PAGE_WIDTH,
       height: PAGE_HEIGHT,
-      size: 'fixed',             // Blocca il ridimensionamento instabile
+      size: 'fixed',
       minWidth: 300,
       maxWidth: 1000,
       minHeight: 400,
       maxHeight: 1200,
       drawShadow: true,
       maxShadowOpacity: 0.5,
-      showCover: true,           // Parte dalla copertina singola, poi si apre a 2 pagine
+      showCover: true,
       mobileScrollSupport: false
     });
 
