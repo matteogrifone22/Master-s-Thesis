@@ -8,7 +8,6 @@ async function initBook() {
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
     const bookContainer = document.getElementById('book');
 
-    // Dimensioni di riferimento per la pagina
     const PAGE_WIDTH = 550;
     const PAGE_HEIGHT = 770;
 
@@ -34,19 +33,17 @@ async function initBook() {
       bookContainer.appendChild(pageDiv);
     }
 
-    // Inizializzazione PageFlip
     const pageFlip = new St.PageFlip(bookContainer, {
       width: PAGE_WIDTH,
       height: PAGE_HEIGHT,
-      size: 'fixed',             // 'fixed' blocca i tremolii
+      size: 'fixed',             // Blocca il ridimensionamento instabile
       minWidth: 300,
       maxWidth: 1000,
       minHeight: 400,
       maxHeight: 1200,
       drawShadow: true,
       maxShadowOpacity: 0.5,
-      showCover: false,          // Mantiene subito la vista a due pagine
-      usePortrait: false,
+      showCover: true,           // Parte dalla copertina singola, poi si apre a 2 pagine
       mobileScrollSupport: false
     });
 
